@@ -1,0 +1,14 @@
+spin_manifest_version = 2
+
+[application]
+name = "spin-http-random"
+version = "1.0.0"
+
+[[trigger.http]]
+route = "/..."
+component = "spin-http-random"
+
+[component.spin-http-random]
+source = "../../../target/wasm32-wasip1/release/spin_http_eval_assign.wasm"
+allowed_outbound_hosts = ["http://www.randomnumberapi.com"]
+key_value_stores = ["default"]

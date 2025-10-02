@@ -1,0 +1,8 @@
+package workshop:example;
+
+/// An example world for the component to target.
+world example {
+    import wasi:random/random@0.2.7;
+
+    export add-random: func(num: u64) -> u64;
+}

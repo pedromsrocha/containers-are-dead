@@ -1,0 +1,7 @@
+[[verification]]
+command = "cargo"
+args = ["build", "--target", "wasm32-wasip1", "--release", "--manifest-path", "tests/Cargo.toml"]
+
+[[verification]]
+command = "spin"
+args = ["test"]

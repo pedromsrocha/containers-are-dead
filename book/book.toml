@@ -1,0 +1,5 @@
+[book]
+authors = []
+language = "en"
+src = "src"
+title = "Containers Are Dead - Long Live WebAssembly"

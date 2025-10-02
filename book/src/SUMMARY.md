@@ -1,0 +1,17 @@
+# Summary
+
+- [Basics](01_basics/00_welcome.md)
+  - [Setup](01_basics/01_setup.md)
+  - [Functions](01_basics/02_functions.md)
+  - [Components](01_basics/03_components.md)
+  - [Outro](01_basics/XX_outro.md)
+- [HTTP Handler](02_http/00_welcome.md)
+  - [WebAssembly Hosting Providers](02_http/01_cloud_providers.md)
+  - [Making HTTP requests](02_http/02_requests.md)
+  - [HTTP Handlers](02_http/03_handler.md)
+  - [Key Value Store](02_http/04_key_value.md)
+  - [Routing](02_http/05_routing.md)
+  - [Outro](02_http/XX_outro.md)
+- [Advanced](03_advanced/00_welcome.md)
+  - [Observability](03_advanced/01_observability.md)
+  - [Outro](03_advanced/XX_outro.md)

@@ -1,0 +1,14 @@
+target/
+exercises/progress.db
+.DS_Store
+.spin
+
+# Wasm
+*.wasm
+*.wat
+
+# JetBrains
+.idea/
+
+# VSCode
+.vscode/

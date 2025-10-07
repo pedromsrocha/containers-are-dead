@@ -41,19 +41,6 @@ Copyright © 2024- Mainmatter GmbH (https://mainmatter.com), released under the
 
 - Chapter 02: Building Real Server-Side Applications (3 hours)
   goals:
-  - 2.0: cloud hosting providers
-  - 2.1: HTTP requests with the spin framework
-    goal: demonstrate easy to use, serverless nature, understand permissions, and the manifest
-    exercise: fix an http endpoint to return random numbers
-  - 2.2: HTTP handlers proper
-    goal: understand error handling in wasm components
-    exercise: integrate the expression evaluator to evaluate POSTed expressions
-  - 2.3: Key Value Store
-    goal: demonstrate how simple values can be stored across calls and the usefulness of that. demonstrate limitations. but emphasize cross-platform support.
-    exercise: expand expression evaluator to support assigning values to variables. Store the variables in the spin-sdk KV store.
-  - 2.4: Key Value Store
-    goal: demonstrate how simple values can be stored across calls and the usefulness of that. demonstrate limitations. but emphasize cross-platform support.
-    exercise: expand expression evaluator to support assigning values to variables. Store the variables in the spin-sdk KV store.
   - 2.5: Routing
     goal: understand how in-component routing works, understand how composition works, understand how inter-component routing works
     - point to Rust + Go demo for inter-language composition

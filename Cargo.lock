@@ -562,6 +562,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "databases"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "fallible-iterator 0.3.0",
+ "serde",
+ "serde-querystring",
+ "serde_json",
+ "spin-sdk",
+]
+
+[[package]]
+name = "databases_tests"
+version = "0.1.0"
+dependencies = [
+ "spin-test-sdk",
+]
+
+[[package]]
 name = "debugid"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1174,6 +1193,22 @@ checksum = "ec48937a97411dcb524a265206ccd4c90bb711fca92b2792c407f268825b9305"
 dependencies = [
  "once_cell",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "key_value"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "fallible-iterator 0.3.0",
+ "spin-sdk",
+]
+
+[[package]]
+name = "key_value_tests"
+version = "0.1.0"
+dependencies = [
+ "spin-test-sdk",
 ]
 
 [[package]]

@@ -1,5 +1,5 @@
 [package]
-name = "spin-http-eval-assign"
+name = "databases_tests"
 version = "0.1.0"
 edition = "2024"
 
@@ -7,5 +7,4 @@ edition = "2024"
 crate-type = ["cdylib"]
 
 [dependencies]
-anyhow = "1.0.100"
-spin-sdk = "5.0.0"
+spin-test-sdk.workspace = true

@@ -1,5 +1,5 @@
 [package]
-name = "key_value"
+name = "databases"
 version = "0.1.0"
 edition = "2024"
 
@@ -9,4 +9,7 @@ crate-type = ["cdylib"]
 [dependencies]
 anyhow = "1.0.100"
 fallible-iterator = "0.3.0"
+serde = { version = "1.0", features = ["derive"] }
+serde-querystring = "0.3.0"
+serde_json = "1.0"
 spin-sdk = "5.0.0"

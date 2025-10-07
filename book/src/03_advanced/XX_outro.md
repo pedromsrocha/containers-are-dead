@@ -3,6 +3,7 @@
 In this workshop we built a calculator API that parses and evaluates arithmetic expressions and persists session state across requests using SQLite. In the process we have seen how WebAssembly can be used to built server side applications today, seen the benefits and experienced the rough edges.
 
 If you want to continue playing with our "calculator-as-a-service" here are a few ideas:
+
 - Add a queryable history feature that stores each calculation with timestamps, allowing users to retrieve their calculation history.
 - Extend this history feature to allow users to share expressions.
 - Add a simple frontend using HTML, JS, and CSS.

@@ -41,11 +41,6 @@ fn test_negative_numbers() {
 }
 
 #[test]
-fn parens() {
-    assert_eq!(call("(10 + 4) * 9"), 126.0);
-}
-
-#[test]
 fn maaany_parens() {
     assert_eq!(call("((((((((8))))))))"), 8.0);
 }

@@ -574,13 +574,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "databases_tests"
-version = "0.1.0"
-dependencies = [
- "spin-test-sdk",
-]
-
-[[package]]
 name = "debugid"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -904,13 +897,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "handler_tests"
-version = "0.1.0"
-dependencies = [
- "spin-test-sdk",
-]
-
-[[package]]
 name = "hashbrown"
 version = "0.15.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1202,13 +1188,6 @@ dependencies = [
  "anyhow",
  "fallible-iterator 0.3.0",
  "spin-sdk",
-]
-
-[[package]]
-name = "key_value_tests"
-version = "0.1.0"
-dependencies = [
- "spin-test-sdk",
 ]
 
 [[package]]
@@ -1716,14 +1695,8 @@ dependencies = [
  "anyhow",
  "serde",
  "serde-querystring",
+ "serde_json",
  "spin-sdk",
-]
-
-[[package]]
-name = "routing_tests"
-version = "0.1.0"
-dependencies = [
- "spin-test-sdk",
 ]
 
 [[package]]

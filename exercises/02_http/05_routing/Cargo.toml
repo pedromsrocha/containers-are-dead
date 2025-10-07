@@ -10,4 +10,5 @@ crate-type = ["cdylib"]
 anyhow.workspace = true
 serde = { workspace = true, features = ["derive"] }
 serde-querystring.workspace = true
+serde_json.workspace = true
 spin-sdk.workspace = true

@@ -4,11 +4,11 @@
 
 Smaller modules load faster, improving cold start performance and in turn reducing the latency between request arrival and function execution - a critical factor for user-facing applications where every millisecond counts.
 
-> Competition! At the end of this workshop we will compare our final *optimized* database examples to see who got the smallest!
+> Competition! At the end of this workshop we will compare our final _optimized_ database examples to see who got the smallest!
 
-Let's start with our current databases example. A debug build produces a WebAssembly module of roughly *19 MB*: clearly room for improvement.
+Let's start with our current databases example. A debug build produces a WebAssembly module of roughly _19 MB_: clearly room for improvement.
 
-We can drastically improve the size by compiling in release mode with optimizations, if we additionally add this config to our *root* `Cargo.toml` file we can usually squeeze some bytes more:
+We can drastically improve the size by compiling in release mode with optimizations, if we additionally add this config to our _root_ `Cargo.toml` file we can usually squeeze some bytes more:
 
 ```toml
 [profile.release]
@@ -45,11 +45,11 @@ watch = ["src/**/*.rs", "Cargo.toml"]
 source = "../../../target/wasm32-wasip1/debug/databases_tests.wasm"
 ```
 
-We get a release binary that comes in at *443 KB*, but we can go further. Binaryen a WebAssembly optimizer and compiler toolchain provides a widely used tool called `wasm-opt` that can preprocess Wasm modules and components.
+We get a release binary that comes in at _443 KB_, but we can go further. Binaryen a WebAssembly optimizer and compiler toolchain provides a widely used tool called `wasm-opt` that can preprocess Wasm modules and components.
 
 `wasm-opt` is a bit annyoing to install, but you can download it from their GitHub releases [here](https://github.com/WebAssembly/binaryen/releases). Alternatively it appears to be in some package repositories either under the `binaryen` or `wasm-opt` name. Again if you use `nix` the flake in this repo already provides `wasm-opt`.
 
-By running `wasm-opt` on our binary like so `wasm-opt target/wasm32-wasip1/release/databases.wasm -O3 -o optimized.wasm` (`-O3` standards for all optimizations at their highest aggressiveness) we get the binary size down to *335 KB*.
+By running `wasm-opt` on our binary like so `wasm-opt target/wasm32-wasip1/release/databases.wasm -O3 -o optimized.wasm` (`-O3` standards for all optimizations at their highest aggressiveness) we get the binary size down to _335 KB_.
 
 ## Optimizing for Performance
 

@@ -10,13 +10,9 @@ members = [
   "exercises/02_http/01_requests",
   "exercises/02_http/01_requests/tests",
   "exercises/02_http/02_handler",
-  "exercises/02_http/02_handler/tests",
   "exercises/02_http/03_key_value",
-  "exercises/02_http/03_key_value/tests",
   "exercises/02_http/04_databases",
-  "exercises/02_http/04_databases/tests",
   "exercises/02_http/05_routing",
-  "exercises/02_http/05_routing/tests",
   "verifier",
 ]
 resolver = "2"

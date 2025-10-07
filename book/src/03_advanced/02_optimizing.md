@@ -47,7 +47,7 @@ source = "../../../target/wasm32-wasip1/debug/databases_tests.wasm"
 
 We get a release binary that comes in at _443 KB_, but we can go further. Binaryen a WebAssembly optimizer and compiler toolchain provides a widely used tool called `wasm-opt` that can preprocess Wasm modules and components.
 
-`wasm-opt` is a bit annyoing to install, but you can download it from their GitHub releases [here](https://github.com/WebAssembly/binaryen/releases). Alternatively it appears to be in some package repositories either under the `binaryen` or `wasm-opt` name. Again if you use `nix` the flake in this repo already provides `wasm-opt`.
+`wasm-opt` is a bit annoying to install, but you can download it from their GitHub releases [here](https://github.com/WebAssembly/binaryen/releases). Alternatively it appears to be in some package repositories either under the `binaryen` or `wasm-opt` name. Again if you use `nix` the flake in this repo already provides `wasm-opt`.
 
 By running `wasm-opt` on our binary like so `wasm-opt target/wasm32-wasip1/release/databases.wasm -O3 -o optimized.wasm` (`-O3` standards for all optimizations at their highest aggressiveness) we get the binary size down to _335 KB_.
 

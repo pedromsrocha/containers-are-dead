@@ -19,29 +19,15 @@ fn handle_route(req: Request) -> Response {
     router.handle(req)
 }
 
+// This endpoint should delete the <ident>=>value mapping match the key `var`
+// from the SQLite database
+// If you get stuck, ask a neighbor or grab a trainer!
 fn delete(req: Request, params: Params) -> anyhow::Result<impl IntoResponse> {
-    let var = params.get("var").unwrap();
-    let params: QueryParams = serde_querystring::from_str(req.query(), ParseMode::UrlEncoded)?;
-
-    let connection = Connection::open_default()?;
-
-    connection.execute(
-        "DELETE FROM variables WHERE session_id = (?) AND key = (?)",
-        &[Value::Integer(params.session), Value::Text(var.to_string())],
-    )?;
-
-    Ok(Response::builder().status(200).build())
+    todo!()
 }
 
+// This endpoint should clear ALL <ident>=>value mappings for the SESSION
+// If you get stuck, ask a neighbor or grab a trainer!
 fn clear(req: Request, _: Params) -> anyhow::Result<impl IntoResponse> {
-    let params: QueryParams = serde_querystring::from_str(req.query(), ParseMode::UrlEncoded)?;
-
-    let connection = Connection::open_default()?;
-
-    connection.execute(
-        "DELETE FROM variables WHERE session_id = (?)",
-        &[Value::Integer(params.session)],
-    )?;
-
-    Ok(Response::builder().status(200).build())
+    todo!()
 }

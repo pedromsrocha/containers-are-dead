@@ -8,7 +8,7 @@ use std::str::FromStr;
 
 /// A simple Spin HTTP component.
 #[http_component]
-pub fn handle_foo(req: Request) -> anyhow::Result<impl IntoResponse> {
+pub fn handler(req: Request) -> anyhow::Result<impl IntoResponse> {
     let input = str::from_utf8(req.body())?;
 
     let result = Evaluator::new(input).eval();

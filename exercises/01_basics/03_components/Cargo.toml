@@ -7,7 +7,7 @@ edition = "2024"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-wit-bindgen-rt = "0.44.0"
+wit-bindgen-rt.workspace = true
 
 [package.metadata.component]
 package = "workshop:example"

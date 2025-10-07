@@ -7,9 +7,9 @@ edition = "2024"
 crate-type = ["cdylib"]
 
 [dependencies]
-anyhow = "1.0.100"
-fallible-iterator = "0.3.0"
-serde = { version = "1.0", features = ["derive"] }
-serde-querystring = "0.3.0"
-serde_json = "1.0"
-spin-sdk = "5.0.0"
+anyhow.workspace = true
+fallible-iterator.workspace = true
+serde = { workspace = true, features = ["derive"] }
+serde-querystring.workspace = true
+serde_json.workspace = true
+spin-sdk.workspace = true

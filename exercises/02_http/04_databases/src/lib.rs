@@ -12,7 +12,7 @@ use std::str::FromStr;
 // curl --request POST --data '10 / 2' http://localhost:3000?session=<ID>
 
 #[derive(Deserialize)]
-struct Params {
+struct QueryParams {
     session: Option<i64>,
 }
 
@@ -25,7 +25,7 @@ struct EvalResponse {
 /// A simple Spin HTTP component.
 #[http_component]
 pub fn handler(req: Request) -> anyhow::Result<impl IntoResponse> {
-    let params: Params = serde_querystring::from_str(req.query(), ParseMode::UrlEncoded)?;
+    let params: QueryParams = serde_querystring::from_str(req.query(), ParseMode::UrlEncoded)?;
 
     let connection = Connection::open_default()?;
 

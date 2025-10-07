@@ -7,5 +7,5 @@ edition = "2024"
 crate-type = ["cdylib"]
 
 [dependencies]
-anyhow = "1.0.100"
-spin-sdk = "5.0.0"
+anyhow.workspace = true
+spin-sdk.workspace = true

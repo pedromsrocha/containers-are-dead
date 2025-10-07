@@ -1,25 +1,32 @@
 spin_manifest_version = 2
 
 [application]
-name = "spin-http-random"
+name = "routing"
 version = "1.0.0"
 
 [[trigger.http]]
-route = "/eval/"
-component = "spin-http-eval-assign"
+route = "/eval"
+component = "databases"
 
 [[trigger.http]]
 route = "/clear/..."
-component = "spin-http-eval-clear"
+component = "routing"
 
-[component.spin-http-eval-assign]
-source = "../../../target/wasm32-wasip1/release/spin_http_eval_assign.wasm"
-key_value_stores = ["default"]
-[component.spin-http-eval-assign.build]
-command = "cargo build -p spin-http-eval-assign --target wasm32-wasip1 --release"
+[component.databases]
+source = "../../../target/wasm32-wasip1/debug/databases.wasm"
+sqlite_databases = ["default"]
 
-[component.spin-http-eval-clear]
-source = "../../../target/wasm32-wasip1/release/spin_http_eval_assign_clear.wasm"
-key_value_stores = ["default"]
-[component.spin-http-eval-clear.build]
-command = "cargo build -p spin-http-eval-assign-clear --target wasm32-wasip1 --release"
+[component.databases.build]
+command = "cargo build -p databases --target wasm32-wasip1"
+watch = ["../04_databases/src/**/*.rs", "Cargo.toml"]
+
+[component.routing]
+source = "../../../target/wasm32-wasip1/debug/routing.wasm"
+sqlite_databases = ["default"]
+
+[component.routing.build]
+command = "cargo build -p routing --target wasm32-wasip1"
+watch = ["src/**/*.rs", "Cargo.toml"]
+
+[component.routing.tool.spin-test]
+source = "../../../target/wasm32-wasip1/debug/routing_tests.wasm"

@@ -1,5 +1,5 @@
 [package]
-name = "spin-http-eval-assign-clear"
+name = "routing"
 version = "0.1.0"
 edition = "2024"
 
@@ -7,5 +7,7 @@ edition = "2024"
 crate-type = ["cdylib"]
 
 [dependencies]
-anyhow = "1.0.100"
-spin-sdk = "5.0.0"
+anyhow.workspace = true
+serde = { workspace = true, features = ["derive"] }
+serde-querystring.workspace = true
+spin-sdk.workspace = true

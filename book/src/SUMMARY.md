@@ -15,4 +15,5 @@
   - [Outro](02_http/XX_outro.md)
 - [Advanced](03_advanced/00_welcome.md)
   - [Observability](03_advanced/01_observability.md)
+  - [Optimizing](03_advanced/02_optimizing.md)
   - [Outro](03_advanced/XX_outro.md)

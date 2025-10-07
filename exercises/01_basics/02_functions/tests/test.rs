@@ -1,18 +1,34 @@
 extern crate functions;
 
-use std::ptr;
+use std::ffi::c_void;
 
 use functions::Token;
 
-fn parse_expression(str: &str) -> Box<[Token]> {
+fn parse_expression(str: &str) -> Vec<Token> {
     unsafe extern "C" {
         #[link_name = "parse_expression"]
-        fn parse_expression_inner(ptr: *const u8, len: usize) -> (*mut Token, usize);
+        fn parse_expression_inner(
+            in_ptr: *const u8,
+            in_len: usize,
+            out_ptr: *mut c_void,
+            out_len: usize,
+        ) -> usize;
     }
 
-    let (ptr, len) = unsafe { parse_expression_inner(str.as_ptr(), str.len()) };
+    let mut out: Vec<Token> = Vec::with_capacity(1024);
 
-    unsafe { Box::from_raw(ptr::slice_from_raw_parts_mut(ptr, len)) }
+    let tokens_emitted = unsafe {
+        parse_expression_inner(
+            str.as_ptr(),
+            str.len(),
+            out.as_mut_ptr().cast(),
+            out.capacity(),
+        )
+    };
+
+    unsafe { out.set_len(tokens_emitted) };
+
+    out
 }
 
 #[test]
@@ -52,3 +68,6 @@ fn verify_it_works() {
         ]
     );
 }
+
+#[test]
+fn whitespace() {}

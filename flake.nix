@@ -31,6 +31,7 @@
             # inspecting wasm
             wasm-tools
             binaryen
+            wizer
 
             # wasm components
             cargo-component

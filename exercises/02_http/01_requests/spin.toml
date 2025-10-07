@@ -1,13 +1,18 @@
 spin_manifest_version = 2
 
 [application]
-name = "spin-http-random"
+name = "requests"
 version = "1.0.0"
 
 [[trigger.http]]
 route = "/..."
-component = "spin-http-random"
+component = "requests"
 
-[component.spin-http-random]
-source = "../../../target/wasm32-wasip1/release/spin_http_random.wasm"
+[component.requests]
+source = "../../../target/wasm32-wasip1/debug/requests.wasm"
 allowed_outbound_hosts = ["http://www.randomnumberapi.com"]
+[component.requests.build]
+command = "cargo build -p requests --target wasm32-wasip1"
+
+[component.requests.tool.spin-test]
+source = "../../../target/wasm32-wasip1/debug/requests_tests.wasm"

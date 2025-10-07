@@ -1,5 +1,5 @@
 [package]
-name = "spin-http-random"
+name = "requests"
 version = "0.1.0"
 edition = "2024"
 
@@ -8,4 +8,6 @@ crate-type = ["cdylib"]
 
 [dependencies]
 anyhow = "1.0.100"
+serde = { version = "1.0.228", features = ["derive"] }
+serde-querystring = "0.3.0"
 spin-sdk = "5.0.0"

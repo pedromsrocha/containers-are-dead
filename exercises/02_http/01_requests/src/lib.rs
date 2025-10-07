@@ -1,12 +1,25 @@
+use serde::Deserialize;
+use serde_querystring::ParseMode;
 use spin_sdk::http::{IntoResponse, Method, Request, Response};
 use spin_sdk::http_component;
 
-/// A simple Spin HTTP component.
+#[derive(Deserialize)]
+struct Params {
+    min: Option<usize>,
+    max: Option<usize>,
+}
+
 #[http_component]
-pub async fn handle_foo(_req: Request) -> anyhow::Result<impl IntoResponse> {
+pub async fn handler(req: Request) -> anyhow::Result<impl IntoResponse> {
+    let params: Params = serde_querystring::from_str(req.query(), ParseMode::UrlEncoded)?;
+
     let req = Request::builder()
         .method(Method::Get)
-        .uri("http://www.randomnumberapi.com/api/v1.0/random?min=100&max=1000")
+        .uri(format!(
+            "http://www.randomnumberapi.com/api/v1.0/random?min={}&max={}",
+            params.min.unwrap_or(0),
+            params.max.unwrap_or(1000)
+        ))
         .build();
 
     let res: Response = spin_sdk::http::send(req).await?;

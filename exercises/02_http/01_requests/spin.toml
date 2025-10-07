@@ -11,8 +11,10 @@ component = "requests"
 [component.requests]
 source = "../../../target/wasm32-wasip1/debug/requests.wasm"
 allowed_outbound_hosts = ["http://www.randomnumberapi.com"]
+
 [component.requests.build]
 command = "cargo build -p requests --target wasm32-wasip1"
+watch = ["src/**/*.rs", "Cargo.toml"]
 
 [component.requests.tool.spin-test]
 source = "../../../target/wasm32-wasip1/debug/requests_tests.wasm"

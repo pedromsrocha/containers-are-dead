@@ -12,6 +12,7 @@ members = [
   "exercises/02_http/02_handler",
   "exercises/02_http/02_handler/tests",
   "exercises/02_http/03_key_value",
+  "exercises/02_http/03_key_value/tests",
   "verifier",
 ]
 resolver = "2"

@@ -1,6 +1,7 @@
+use anyhow::{Context, bail};
+use fallible_iterator::FallibleIterator;
 use spin_sdk::http::{IntoResponse, Request, Response};
 use spin_sdk::http_component;
-use std::iter::Peekable;
 use std::str::Chars;
 use std::str::FromStr;
 
@@ -12,7 +13,7 @@ pub fn handler(req: Request) -> anyhow::Result<impl IntoResponse> {
     let store = spin_sdk::key_value::Store::open_default()?;
 
     let input = str::from_utf8(req.body())?;
-    let result = Evaluator::new(input, &store).eval();
+    let result = Evaluator::new(input, &store).eval()?;
 
     Ok(Response::builder()
         .status(200)
@@ -23,7 +24,7 @@ pub fn handler(req: Request) -> anyhow::Result<impl IntoResponse> {
 
 #[derive(Clone)]
 struct Evaluator<'a, 'store> {
-    parser: Peekable<Parser<'a>>,
+    parser: fallible_iterator::Peekable<Parser<'a>>,
     store: &'store spin_sdk::key_value::Store,
 }
 
@@ -35,93 +36,93 @@ impl<'a, 'store> Evaluator<'a, 'store> {
         }
     }
 
-    fn get_variable(&self, name: &str) -> f64 {
+    fn get_variable(&self, name: &str) -> anyhow::Result<f64> {
         let val = self
             .store
-            .get(name)
-            .expect("failed to load variable")
-            .expect("not such variable in the store");
+            .get(name)?
+            .context("not such variable in the store")?;
 
-        f64::from_le_bytes(val.try_into().unwrap())
+        Ok(f64::from_le_bytes(val.try_into().unwrap()))
     }
 
-    fn set_variable(&self, name: &str, val: f64) {
-        self.store.set(name, &val.to_le_bytes()).unwrap();
+    fn set_variable(&self, name: &str, val: f64) -> anyhow::Result<()> {
+        self.store.set(name, &val.to_le_bytes())?;
+        Ok(())
     }
 
-    pub fn eval(mut self) -> Option<f64> {
+    pub fn eval(mut self) -> anyhow::Result<Option<f64>> {
         let mut clone = self.clone();
         if let Some(Token::Variable(var)) =
-            clone.parser.next_if(|t| matches!(t, Token::Variable(_)))
+            clone.parser.next_if(|t| matches!(t, Token::Variable(_)))?
         {
             if clone
                 .parser
-                .next_if(|t| matches!(t, Token::Assign))
+                .next_if(|t| matches!(t, Token::Assign))?
                 .is_some()
             {
-                let result = clone.eval_expression();
+                let result = clone.eval_expression()?;
 
-                self.set_variable(&var, result);
-                return None;
+                self.set_variable(&var, result)?;
+                return Ok(None);
             }
         }
 
-        Some(self.eval_expression())
+        self.eval_expression().map(Some)
     }
 
-    fn eval_expression(&mut self) -> f64 {
-        let mut result = self.eval_term();
+    fn eval_expression(&mut self) -> anyhow::Result<f64> {
+        let mut result = self.eval_term()?;
 
-        while let Some(token) = self.parser.peek() {
+        while let Some(token) = self.parser.peek()? {
             match token {
                 Token::Plus => {
-                    self.parser.next();
-                    result += self.eval_term();
+                    self.parser.next()?;
+                    result += self.eval_term()?;
                 }
                 Token::Minus => {
-                    self.parser.next();
-                    result -= self.eval_term();
+                    self.parser.next()?;
+                    result -= self.eval_term()?;
                 }
                 _ => break,
             }
         }
 
-        result
+        Ok(result)
     }
 
-    fn eval_term(&mut self) -> f64 {
-        let mut result = self.eval_factor();
+    fn eval_term(&mut self) -> anyhow::Result<f64> {
+        let mut result = self.eval_factor()?;
 
-        while let Some(token) = self.parser.peek() {
+        while let Some(token) = self.parser.peek()? {
             match token {
                 Token::Multiply => {
-                    self.parser.next();
-                    result *= self.eval_factor();
+                    self.parser.next()?;
+                    result *= self.eval_factor()?;
                 }
                 Token::Divide => {
-                    self.parser.next();
-                    result /= self.eval_factor();
+                    self.parser.next()?;
+                    result /= self.eval_factor()?;
                 }
                 _ => break,
             }
         }
 
-        result
+        Ok(result)
     }
 
-    fn eval_factor(&mut self) -> f64 {
-        match self.parser.next().expect("unexpected EOF") {
-            Token::Number(n) => n,
+    fn eval_factor(&mut self) -> anyhow::Result<f64> {
+        match self.parser.next()?.context("unexpected EOF")? {
+            Token::Number(n) => Ok(n),
             Token::Variable(var) => self.get_variable(&var),
             Token::LeftParen => {
-                let result = self.eval_expression();
-                match self.parser.next().expect("unexpected EOF") {
-                    Token::RightParen => result,
-                    _ => panic!("mismatched parentheses"),
+                let result = self.eval_expression()?;
+                match self.parser.next()?.context("unexpected EOF")? {
+                    Token::RightParen => Ok(result),
+                    _ => bail!("mismatched parentheses"),
                 }
             }
-            Token::Minus => -self.eval_factor(),
-            t => panic!("mismatched token {t:?}"),
+            Token::Minus => Ok(-self.eval_factor()?),
+            t => bail!("mismatched token {t:?}"),
         }
     }
 }
@@ -141,7 +142,7 @@ enum Token {
 
 #[derive(Clone)]
 struct Parser<'a> {
-    chars: Peekable<Chars<'a>>,
+    chars: std::iter::Peekable<Chars<'a>>,
 }
 
 impl<'a> Parser<'a> {
@@ -152,11 +153,14 @@ impl<'a> Parser<'a> {
     }
 }
 
-impl<'a> Iterator for Parser<'a> {
+impl<'a> FallibleIterator for Parser<'a> {
     type Item = Token;
+    type Error = anyhow::Error;
 
-    fn next(&mut self) -> Option<Self::Item> {
-        let ch = self.chars.next()?;
+    fn next(&mut self) -> Result<Option<Self::Item>, Self::Error> {
+        let Some(ch) = self.chars.next() else {
+            return Ok(None);
+        };
 
         let token = match ch {
             ' ' | '\t' => {
@@ -175,7 +179,7 @@ impl<'a> Iterator for Parser<'a> {
                 while let Some(ch) = self.chars.next_if(|c| c.is_numeric() || *c == '.') {
                     str.push(ch);
                 }
-                Token::Number(f64::from_str(&str).unwrap())
+                Token::Number(f64::from_str(&str)?)
             }
             c if c.is_alphabetic() => {
                 let mut str = c.to_string();
@@ -187,9 +191,9 @@ impl<'a> Iterator for Parser<'a> {
                 }
                 Token::Variable(str)
             }
-            _ => panic!("unexpected character: {ch}"),
+            _ => bail!("unexpected character: {ch}"),
         };
 
-        Some(token)
+        Ok(Some(token))
     }
 }

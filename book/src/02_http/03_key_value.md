@@ -1,0 +1,97 @@
+# Key Value Store
+
+The ephemeral, serverless nature of WebAssembly HTTP components allows for excellent reasoning about a system: Each request starts with a clean slate. What do you do if you actually want to share state between requests though? You need external storage that persists beyond the component's lifecycle.
+
+Most WebAssembly serverless runtimes offer a variety of choices. The first we will look at is the _[Key Value Store]_.
+
+They Key Value Store maps string keys to bytes. It is similar to a Rust [`Hashmap`] or Browser [`LocalStorage`]. <br/>
+Before you can access the store - similar to exercise [02/01](./01_requests.md) - we need to request access to the store from the runtime. This is done by adding the following line to our `spin.toml` manifest:
+
+```diff
+spin_manifest_version = 2
+
+[application]
+name = "key-value"
+version = "1.0.0"
+
+[[trigger.http]]
+route = "/..."
+component = "key-value"
+
+[component.key-value]
+source = "../../../target/wasm32-wasip1/debug/key_value.wasm"
++key_value_stores = ["default"]
+[component.key-value.build]
+command = "cargo build -p key_value --target wasm32-wasip1"
+
+[component.key-value.tool.spin-test]
+source = "../../../target/wasm32-wasip1/debug/key_value_tests.wasm"
+```
+
+This configuration gives the `key-value` component access to the `"default"` store (currently the only supported ID). We can then open this store in our Rust code by calling the [`Store::open_default()`] method:
+
+```rust
+let store = spin_sdk::key_value::Store::open_default()?;
+
+let val = self
+    .store
+    .get("foo")
+    .expect("failed to load value from store")
+    .expect("not such key in the store");
+
+// do something with the value...
+```
+
+and write a value back to the store like so:
+
+```rust
+let store = spin_sdk::key_value::Store::open_default()?;
+
+self
+    .store
+    .set("foo", "bar".as_bytes())
+    .expect("failed to store value in store");
+```
+
+## JSON
+
+The `spin` store also provides two convenience methods for storing any [`serde`] serializable data into the store as JSON: [`Store::get_json()`] and [`Store::set_json()`].
+
+```rust
+use serde::{Serialize, Deserialize};
+
+#[derive(Debug, Serialize, Deserialize)]
+struct User {
+    name: String,
+    age: u8
+}
+
+let store = spin_sdk::key_value::Store::open_default()?;
+
+// this presumably came from _somewhere_
+let user_name = "john";
+
+// load the user object from the store, it must be deserializable to a `User` struct
+let mut val = self
+    .store
+    .get_json::<User>(user_name)
+    .expect("failed to load value from store")
+    .expect("not such key in the store");
+
+// update the age (its the users birthday!)
+val.age += 1;
+
+// write the user object back to the store
+self
+    .store
+    .set_json(user_name, val)
+    .expect("failed to store value in store");
+```
+
+[Key Value Store]: https://spinframework.dev/v3/rust-components#storing-data-in-the-spin-key-value-store
+[`Hashmap`]: https://doc.rust-lang.org/std/collections/struct.HashMap.html
+[`LocalStorage`]: https://developer.mozilla.org/en-US/docs/Web/API/Storage
+[`Store::open_default()`]: https://docs.rs/spin-sdk/latest/spin_sdk/key_value/struct.Store.html#method.open_default
+[`serde`]: https://docs.rs/serde/latest/serde/index.html
+[`Store::get_json()`]: https://docs.rs/spin-sdk/latest/spin_sdk/key_value/struct.Store.html#method.get_json
+[`Store::set_json()`]: https://docs.rs/spin-sdk/latest/spin_sdk/key_value/struct.Store.html#method.set_json

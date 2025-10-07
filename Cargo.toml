@@ -22,13 +22,13 @@ members = [
 resolver = "2"
 
 [workspace.dependencies]
-clap = { version = "4.5.48", features = ["derive"] }
-spin-test-sdk = { git = "https://github.com/spinframework/spin-test", version = "0.1.0" }
-wasmtime = "37.0.1"
-wasmtime-wasi = "37.0.1"
 anyhow = "1.0.100"
+clap = { version = "4.5.48", features = ["derive"] }
 fallible-iterator = "0.3.0"
 serde = { version = "1.0", features = ["derive"] }
 serde-querystring = "0.3.0"
 serde_json = "1.0"
 spin-sdk = "5.0.0"
+spin-test-sdk = { git = "https://github.com/spinframework/spin-test", version = "0.1.0" }
+wasmtime = "37.0.1"
+wasmtime-wasi = "37.0.1"

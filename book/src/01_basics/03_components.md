@@ -2,7 +2,7 @@
 
 In the previous section, you experienced the friction of passing strings to WebAssembly functions - requiring manual pointer/length pairs and unsafe memory operations. This fundamental limitation exists on purpose to keep the core WebAssembly specification simple, portable and easy to implement.
 
-On top of this core specification the WebAssembly Component Model introduces a rich type system that supports complex data structures like strings, records, variants, lists, and options. Components can define interfaces using WebAssembly Interface Types (WIT), enabling type-safe communication between WebAssembly modules and their hosts without manual memory management.
+On top of this core specification the [WebAssembly Component Model](https://component-model.bytecodealliance.org/) introduces a rich type system that supports complex data structures like strings, records, variants, lists, and options. Components can define interfaces using WebAssembly Interface Types (WIT), enabling type-safe communication between WebAssembly modules and their hosts without manual memory management.
 
 Where core WebAssembly modules export functions with basic numeric parameters, components export interfaces with high-level types that are automatically marshaled by the runtime. Below you can see an example of such an interface:
 

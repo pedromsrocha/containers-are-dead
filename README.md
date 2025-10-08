@@ -14,7 +14,7 @@ We assume you are familiar with the basics of Rust but we will provide brief exp
 
 ## Getting started
 
-Open [the companion book for this course](https://rust-exercises.com/rust-python-interop/) in your browser.
+Open [the companion book for this course](https://mainmatter.github.io/containers-are-dead/) in your browser.
 Follow the instructions there to get started.
 
 ## Requirements

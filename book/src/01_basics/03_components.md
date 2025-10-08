@@ -64,7 +64,7 @@ cargo install cargo-component
 Now, looking at the exercise for this section you will notice a couple new things.
 
 ```plaintext
-01_setup
+03_components
 ├── src
 │   └── lib.rs
 ├── wit
